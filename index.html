@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Напоминания</title>
+</head>
+<body>
+  <form class="form register-form">
+    <input type="text" name="name" class="text-input name" placeholder="Имя" required>
+    <input type="email" name="email" class="text-input email" placeholder="Введите ваш Email" required>
+    <button type="submit" class="register-btn">Зарегистрироваться</button>
+  </form>
+
+  <header>
+    <p class="greeting"></p>
+  </header>
+
+  <div class="bg"></div>
+
+  <main>
+    <input type="search" class="search" placeholder="Поиск...">
+    
+    <div class="filter-list">
+      <button type="button" class="filter is-active">Всё</button>
+      <button type="button" class="filter">Завтра</button>
+      <button type="button" class="filter">Эта неделя</button>
+    </div>
+
+    <div class="reminders-list"></div>
+    <div class="more"></div>
+
+    <button type="button" class="open-btn" aria-label="Открыть форму добавления">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14"/>
+        <path d="M5 12h14"/>
+      </svg>
+    </button>
+
+    <form class="form input-container">
+      <button type="button" class="close-btn" aria-label="Закрыть форму">
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18"/>
+          <path d="m6 6 12 12"/>
+        </svg>
+      </button>
+      <input type="text" name="reminderText" class="text-input text" placeholder="Текст..." required>
+      <input type="date" name="reminderDate" class="text-input date" required>
+      <button type="submit" class="add-btn">Добавить</button>
+    </form>
+  </main>
+
+  <script type="module" src="./JS/index.js"></script>
+</body>
+</html>
