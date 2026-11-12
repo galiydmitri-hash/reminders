@@ -20,22 +20,26 @@ serve(async (req) => {
 
     const today = getTodayString();
 
-    // Находим все напоминания на сегодня
+    // 1. Находим только те напоминания на сегодня, которые ЕЩЕ НЕ отправлены
     const { data: reminders, error } = await supabaseAdmin
       .from('reminders')
       .select('*')
-      .eq('date', today);
+      .eq('date', today)
+      .eq('is_sent', false);
 
     if (error) throw error;
 
     if (!reminders || reminders.length === 0) {
-      return new Response(JSON.stringify({ message: "Нет напоминаний на сегодня." }), {
+      return new Response(JSON.stringify({ message: "Нет новых напоминаний для отправки на сегодня." }), {
         headers: { "Content-Type": "application/json" },
       });
     }
 
     const results = [];
     for (const item of reminders) {
+      if (!item.email) continue;
+
+      // 2. Отправляем письмо через Resend API
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -51,6 +55,15 @@ serve(async (req) => {
       });
 
       const resData = await res.json();
+
+      if (res.ok) {
+        // 3. Если письмо успешно ушло, обновляем статус в базе данных
+        await supabaseAdmin
+          .from('reminders')
+          .update({ is_sent: true })
+          .eq('id', item.id);
+      }
+
       results.push({ email: item.email, status: res.ok, response: resData });
     }
 
